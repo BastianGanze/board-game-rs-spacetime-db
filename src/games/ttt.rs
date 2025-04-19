@@ -1,13 +1,13 @@
 use std::fmt::{Debug, Display, Formatter};
-
+use spacetimedb::SpacetimeType;
 use crate::board::{Alternating, Board, BoardDone, BoardMoves, BruteforceMoveIterator, Outcome, PlayError, Player};
 use crate::impl_unit_symmetry_board;
 use crate::util::coord::{Coord3, CoordAllIter};
 use crate::util::iter::ClonableInternal;
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(SpacetimeType, Clone, Eq, PartialEq, Hash, Debug)]
 pub struct TTTBoard {
-    tiles: [Option<Player>; 9],
+    tiles: Vec<Option<Player>>,
     next_player: Player,
     outcome: Option<Outcome>,
 }
@@ -26,7 +26,7 @@ const LINES: &[[(usize, usize); 3]] = &[
 impl Default for TTTBoard {
     fn default() -> Self {
         TTTBoard {
-            tiles: Default::default(),
+            tiles: vec![None; 9],
             next_player: Player::A,
             outcome: None,
         }

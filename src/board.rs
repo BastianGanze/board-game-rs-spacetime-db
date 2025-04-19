@@ -5,31 +5,31 @@ use std::ops::ControlFlow;
 
 use internal_iterator::InternalIterator;
 use rand::Rng;
-
+use spacetimedb::SpacetimeType;
 use crate::symmetry::Symmetry;
 
 // TODO consider adding pseudo-legal movegen and a play variant that can reject non-available moves
 
 /// One of the two players.
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum Player {
     A,
     B,
 }
 
 /// The absolute outcome for a game.
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum Outcome {
     WonBy(Player),
     Draw,
 }
 
 /// The error returned when a [Board] is done, causing the called function to not work.
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq)]
 pub struct BoardDone;
 
 /// The error returned when [Board::play] fails.
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq)]
 pub enum PlayError {
     BoardDone,
     UnavailableMove,
