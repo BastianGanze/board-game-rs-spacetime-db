@@ -1,6 +1,7 @@
 use std::fmt::{Display, Formatter};
+use spacetimedb::SpacetimeType;
 
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Coord<const X: u8, const Y: u8> {
     index: u8,
 }
