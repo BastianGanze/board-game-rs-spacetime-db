@@ -4,15 +4,18 @@ use std::hash::{Hash, Hasher};
 use lazy_static::lazy_static;
 use rand::distributions::{Distribution, Standard};
 use rand::Rng;
-
+use serde::{Deserialize, Serialize};
+use spacetimedb::SpacetimeType;
 use crate::board::Player;
 use crate::games::go::{FlatTile, State, GO_MAX_AREA};
 use crate::util::tiny::consistent_rng;
 
 type Inner = u128;
 
-#[derive(Default, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
-pub struct Zobrist(Inner);
+#[derive(SpacetimeType, Default, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize)]
+pub struct Zobrist {
+    pub v: Inner,
+}
 
 pub struct HashData {
     color_tile: [Vec<Zobrist>; 2],
@@ -67,7 +70,7 @@ impl Debug for HashData {
 
 impl Distribution<Zobrist> for Standard {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Zobrist {
-        Zobrist(rng.gen())
+        Zobrist{v:rng.gen()}
     }
 }
 
@@ -89,7 +92,7 @@ impl Debug for Zobrist {
         write!(
             f,
             "Zobrist({:#0width$x})",
-            self.0,
+            self.v,
             width = (Inner::BITS / 8 + 2) as usize
         )
     }
@@ -99,13 +102,13 @@ impl std::ops::BitXor for Zobrist {
     type Output = Self;
 
     fn bitxor(self, rhs: Self) -> Self::Output {
-        Zobrist(self.0 ^ rhs.0)
+        Zobrist{v:self.v ^ rhs.v}
     }
 }
 
 impl std::ops::BitXorAssign for Zobrist {
     fn bitxor_assign(&mut self, rhs: Self) {
-        self.0 ^= rhs.0;
+        self.v ^= rhs.v;
     }
 }
 
@@ -113,6 +116,6 @@ impl nohash_hasher::IsEnabled for Zobrist {}
 
 impl Hash for Zobrist {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        state.write_u64((self.0 as u64) ^ ((self.0 >> 64) as u64));
+        state.write_u64((self.v as u64) ^ ((self.v >> 64) as u64));
     }
 }

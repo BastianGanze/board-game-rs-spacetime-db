@@ -1,7 +1,7 @@
 use std::fmt::{Debug, Display, Formatter};
 use std::hash::{Hash, Hasher};
 use std::ops::Range;
-
+use spacetimedb::SpacetimeType;
 use crate::board::{
     Alternating, Board, BoardDone, BoardMoves, BoardSymmetry, BruteforceMoveIterator, Outcome, PlayError, Player,
 };
@@ -11,7 +11,7 @@ use crate::util::iter::ClonableInternal;
 /// The Connect4 game on a 7x6 board.
 ///
 /// The bitboard implementation is based on <http://blog.gamesolver.org/solving-connect-four/06-bitboard/>.
-#[derive(Clone, Eq, PartialEq)]
+#[derive(SpacetimeType, Clone, Eq, PartialEq)]
 pub struct Connect4 {
     tiles_next: u64,
     tiles_occupied: u64,

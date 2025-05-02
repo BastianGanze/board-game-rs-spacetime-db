@@ -6,7 +6,8 @@ use std::ops::ControlFlow;
 use internal_iterator::InternalIterator;
 use nohash_hasher::IntSet;
 use rand::Rng;
-
+use spacetimedb::{SpacetimeType};
+use serde::{Deserialize, Serialize};
 use crate::board::{
     AllMovesIterator, AvailableMovesIterator, Board, BoardDone, BoardMoves, Outcome, PlayError, Player,
 };
@@ -15,6 +16,21 @@ use crate::games::go::tile::Tile;
 use crate::games::go::{PlacementKind, Rules, Territory, TileOccupied, Zobrist, GO_MAX_SIZE};
 use crate::impl_unit_symmetry_board;
 use crate::util::iter::IterExt;
+
+
+#[derive(SpacetimeType, Debug, Clone, Eq, PartialEq)]
+pub struct SpacetimeGoBoard {
+    rules: Rules,
+    chains: Chains,
+    next_player: Player,
+    state: State,
+    komi: Komi,
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
+pub struct SpacetimeGoHistory {
+    pub int_set: IntSet<Zobrist>
+}
 
 // TODO add must_pass function? maybe even cache the result of that function in board
 #[derive(Clone, Eq, PartialEq)]
@@ -25,6 +41,31 @@ pub struct GoBoard {
     state: State,
     history: IntSet<Zobrist>,
     komi: Komi,
+}
+
+impl SpacetimeGoBoard {
+    pub fn into_go_board(self, history: IntSet<Zobrist>) -> GoBoard {
+        GoBoard {
+            rules: self.rules,
+            chains: self.chains,
+            next_player: self.next_player,
+            state: self.state,
+            history,
+            komi: self.komi,
+        }
+    }
+}
+
+impl From<GoBoard> for SpacetimeGoBoard {
+    fn from(board: GoBoard) -> Self {
+        SpacetimeGoBoard {
+            rules: board.rules,
+            chains: board.chains,
+            next_player: board.next_player,
+            state: board.state,
+            komi: board.komi,
+        }
+    }
 }
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -53,12 +94,12 @@ impl Score {
 }
 
 /// Komi, in favour of [Player::B] (white).
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Komi {
     komi_2: i16,
 }
 
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum State {
     Normal,
     Passed,

@@ -2,12 +2,13 @@
 
 use crate::games::go::util::OptionU16;
 use std::collections::HashSet;
+use spacetimedb::SpacetimeType;
 
 // TODO remove options here? we either have both present or neither
 // TODO make fields private
 // TODO do a circular linked list instead?
 //   might yield an easier or more compact implementation
-#[derive(Debug, Clone)]
+#[derive(SpacetimeType, Debug, Clone)]
 pub struct LinkHead {
     pub first: OptionU16,
     // TODO remove last?
@@ -16,7 +17,7 @@ pub struct LinkHead {
 }
 
 // TODO remove option here, this can be implicit from the containing node
-#[derive(Debug, Clone)]
+#[derive(SpacetimeType, Debug, Clone)]
 pub struct LinkNode {
     pub prev: OptionU16,
     pub next: OptionU16,

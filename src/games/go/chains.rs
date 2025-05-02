@@ -5,7 +5,7 @@ use std::hash::{Hash, Hasher};
 use itertools::Itertools;
 use rand::seq::IteratorRandom;
 use rand::Rng;
-
+use spacetimedb::SpacetimeType;
 use crate::board::Player;
 use crate::games::go::link::{LinkHead, LinkNode};
 use crate::games::go::stack_vec::StackVec4;
@@ -22,7 +22,7 @@ use crate::util::iter::IterExt;
 // TODO do a bunch of struct-of-array instead of array-of-struct stuff?
 //   unfortunately that would require allocating more separate vecs
 
-#[derive(Clone)]
+#[derive(SpacetimeType, Clone)]
 pub struct Chains {
     size: u8,
 
@@ -40,7 +40,7 @@ pub struct Chains {
 
 // TODO compact into single u8
 // TODO store the current tile in the content too without the extra indirection?
-#[derive(Debug, Clone)]
+#[derive(SpacetimeType, Debug, Clone)]
 pub struct TileContent {
     pub group_id: OptionU16,
     pub link: LinkNode,
@@ -51,7 +51,7 @@ pub struct TileContent {
 
 // TODO compact? we can at least force player into one of the other fields
 // TODO do even even need player here if we also store the player in the tile itself?
-#[derive(Debug, Clone)]
+#[derive(SpacetimeType, Debug, Clone)]
 pub struct Group {
     pub color: Player,
     /// The number of edges adjacent to to liberties.

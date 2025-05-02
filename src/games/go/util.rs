@@ -1,10 +1,11 @@
+use spacetimedb::SpacetimeType;
 use crate::games::go::GO_MAX_AREA;
 use static_assertions::const_assert;
 
 const_assert!(GO_MAX_AREA < u16::MAX - 1);
 
 /// More compact version of `Option<u16>` that uses `u16::MAX` as the `None` value.
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq)]
 pub struct OptionU16 {
     value: u16,
 }

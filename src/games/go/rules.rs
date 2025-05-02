@@ -1,8 +1,9 @@
 use std::fmt::{Debug, Formatter};
+use spacetimedb::SpacetimeType;
 
 /// The specific Go rules used.
 /// See [KataGo's supported rules](https://lightvector.github.io/KataGo/rules.html) for an overview of the variants.
-#[derive(Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(SpacetimeType, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct Rules {
     pub allow_multi_stone_suicide: bool,
     // implicit: repeating tiles not allowed
