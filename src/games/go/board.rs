@@ -8,9 +8,7 @@ use nohash_hasher::IntSet;
 use rand::Rng;
 use spacetimedb::{SpacetimeType};
 use serde::{Deserialize, Serialize};
-use crate::board::{
-    AllMovesIterator, AvailableMovesIterator, Board, BoardDone, BoardMoves, Outcome, PlayError, Player,
-};
+use crate::board::{AllMovesIterator, Alternating, AvailableMovesIterator, Board, BoardDone, BoardMoves, Outcome, PlayError, Player};
 use crate::games::go::chains::Chains;
 use crate::games::go::tile::Tile;
 use crate::games::go::{PlacementKind, Rules, Territory, TileOccupied, Zobrist, GO_MAX_SIZE};
@@ -42,6 +40,8 @@ pub struct GoBoard {
     history: IntSet<Zobrist>,
     komi: Komi,
 }
+
+impl Alternating for GoBoard {}
 
 impl SpacetimeGoBoard {
     pub fn into_go_board(self, history: IntSet<Zobrist>) -> GoBoard {
