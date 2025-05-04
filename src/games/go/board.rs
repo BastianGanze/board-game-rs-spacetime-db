@@ -68,7 +68,7 @@ impl From<GoBoard> for SpacetimeGoBoard {
     }
 }
 
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub enum Move {
     Pass,
     Place(Tile),

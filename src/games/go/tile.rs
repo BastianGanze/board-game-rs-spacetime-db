@@ -1,8 +1,9 @@
+use spacetimedb::SpacetimeType;
 use crate::games::go::GO_MAX_SIZE;
 use crate::symmetry::D4Symmetry;
 use crate::util::iter::IterExt;
 
-#[derive(Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(SpacetimeType, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct Tile {
     x: u8,
     y: u8,
