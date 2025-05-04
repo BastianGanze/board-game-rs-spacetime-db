@@ -54,6 +54,10 @@ impl SpacetimeGoBoard {
             komi: self.komi,
         }
     }
+    
+    pub fn next_player(&self) -> Player {
+        self.next_player
+    }
 }
 
 impl From<GoBoard> for SpacetimeGoBoard {
