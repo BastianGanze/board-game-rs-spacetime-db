@@ -23,6 +23,7 @@ pub struct SpacetimeGoBoard {
     next_player: Player,
     state: State,
     komi: Komi,
+    score: Score,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
@@ -63,6 +64,7 @@ impl SpacetimeGoBoard {
 impl From<GoBoard> for SpacetimeGoBoard {
     fn from(board: GoBoard) -> Self {
         SpacetimeGoBoard {
+            score: board.chains.score(),
             rules: board.rules,
             chains: board.chains,
             next_player: board.next_player,
@@ -78,7 +80,7 @@ pub enum Move {
     Place(Tile),
 }
 
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[derive(SpacetimeType, Debug, Copy, Clone, Eq, PartialEq)]
 pub struct Score {
     pub a: u32,
     pub b: u32,
